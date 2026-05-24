@@ -925,25 +925,31 @@ tooltipList = [
     }
   }
 
-  #feedback_overlay.lion-advisor-feedback-scrim {
-    animation: lionAdvisorScrimIn 170ms ease-out both !important;
+  #feedback_overlay.lion-advisor-feedback-scrim,
+  #visit_overlay.lion-advisor-feedback-scrim {
+    background: rgba(12, 18, 26, 0.10) !important;
+    opacity: 1 !important;
+    animation: none !important;
   }
 
   #feedback_window.lion-advisor-feedback-window,
+  #visit_window.lion-advisor-feedback-window,
   .inner_window.lion-advisor-feedback-window {
-    animation: lionAdvisorWindowIn 390ms var(--lion-motion-advisor-settle) both !important;
+    animation: lionAdvisorWindowIn 410ms var(--lion-motion-advisor-settle) both !important;
     transform-origin: center 32%;
     backface-visibility: hidden;
     contain: paint;
   }
 
   #feedback_window.lion-advisor-feedback-window h3,
+  #visit_window.lion-advisor-feedback-window h3,
   .lion-advisor-feedback-window .lion-advisor-feedback-detail,
   .lion-advisor-feedback-window .lion-advisor-feedback-action {
     backface-visibility: hidden;
   }
 
-  #feedback_window.lion-advisor-feedback-window h3 {
+  #feedback_window.lion-advisor-feedback-window h3,
+  #visit_window.lion-advisor-feedback-window h3 {
     animation: lionAdvisorDetailIn 360ms var(--lion-motion-advisor) 45ms both !important;
   }
 
@@ -961,10 +967,8 @@ tooltipList = [
   svg *,
   .state,
   path,
-  #visit_window,
-  #visit_window *,
-  #visit_content,
-  #visit_content *,
+  #visit_window:not(.lion-advisor-feedback-window),
+  #visit_window:not(.lion-advisor-feedback-window) *,
   #results_container,
   #results_container *,
   .final_results_table,
@@ -978,7 +982,9 @@ tooltipList = [
     label,
     .person_button,
     #feedback_overlay.lion-advisor-feedback-scrim,
+    #visit_overlay.lion-advisor-feedback-scrim,
     #feedback_window.lion-advisor-feedback-window,
+    #visit_window.lion-advisor-feedback-window,
     .lion-advisor-feedback-window,
     .lion-advisor-feedback-detail,
     .lion-advisor-feedback-action {
@@ -1023,21 +1029,48 @@ tooltipList = [
     }, 150);
   }
 
+  function isStateVisitPrompt(panel) {
+    if (!panel || !panel.querySelector) return false;
+    if (panel.querySelector("#confirm_visit_button, #no_visit_button")) return true;
+    var text = (panel.textContent || "").slice(0, 220).toLowerCase();
+    return text.indexOf("chosen to visit") !== -1 || text.indexOf("is this correct") !== -1;
+  }
+
+  function isAdvisorFeedbackPanel(panel) {
+    if (!panel || !panel.querySelector) return false;
+    if (panel.id === "feedback_window") return true;
+    if (panel.id !== "visit_window") return false;
+    if (isStateVisitPrompt(panel)) return false;
+    var heading = panel.querySelector("h3");
+    var headingText = heading ? (heading.textContent || "").replace(/\s+/g, " ").trim().toLowerCase() : "";
+    if (headingText !== "advisor feedback") return false;
+    if (panel.querySelector("#no_feedback_button")) return true;
+    return !!panel.querySelector("#ok_button") && (panel.textContent || "").toLowerCase().indexOf("advisor feedback") !== -1;
+  }
+
   function isMapOrVisitPanel(panel) {
     if (!panel || !panel.closest) return false;
-    if (panel.closest("#map_container, #visit_window, #visit_content, #results_container, #state_result_container, #overall_result_container")) return true;
-    var text = (panel.textContent || "").slice(0, 160).toLowerCase();
+    if (panel.closest("#map_container, #results_container, #state_result_container, #overall_result_container")) return true;
+    if (panel.id === "visit_window" && isStateVisitPrompt(panel)) return true;
+    var text = (panel.textContent || "").slice(0, 180).toLowerCase();
     return text.indexOf("select a state") !== -1 || text.indexOf("visits left") !== -1 || text.indexOf("estimated support") !== -1;
   }
 
   function findAdvisorPanel(root) {
-    var direct = document.getElementById("feedback_window");
-    if (direct && !isMapOrVisitPanel(direct)) return direct;
-    if (!root || root.nodeType !== 1) return null;
-    if (root.id === "feedback_window" && !isMapOrVisitPanel(root)) return root;
-    if (root.querySelector) {
-      var nested = root.querySelector("#feedback_window");
-      if (nested && !isMapOrVisitPanel(nested)) return nested;
+    var candidates = [];
+    var feedback = document.getElementById("feedback_window");
+    var visit = document.getElementById("visit_window");
+    if (feedback) candidates.push(feedback);
+    if (visit) candidates.push(visit);
+    if (root && root.nodeType === 1) {
+      if ((root.id === "feedback_window" || root.id === "visit_window")) candidates.push(root);
+      if (root.querySelectorAll) {
+        var nested = root.querySelectorAll("#feedback_window, #visit_window");
+        for (var i = 0; i < nested.length; i++) candidates.push(nested[i]);
+      }
+    }
+    for (var j = 0; j < candidates.length; j++) {
+      if (isAdvisorFeedbackPanel(candidates[j]) && !isMapOrVisitPanel(candidates[j])) return candidates[j];
     }
     return null;
   }
@@ -1064,14 +1097,12 @@ tooltipList = [
   }
 
   function animateAdvisorPanel(panel) {
-    if (!panel || !panel.classList || isMapOrVisitPanel(panel)) return;
-    var overlay = document.getElementById("feedback_overlay");
+    if (!panel || !panel.classList || !isAdvisorFeedbackPanel(panel) || isMapOrVisitPanel(panel)) return;
+    var overlayId = panel.id === "visit_window" ? "visit_overlay" : "feedback_overlay";
+    var overlay = document.getElementById(overlayId);
     if (overlay && overlay.classList) {
-      overlay.classList.remove("lion-advisor-feedback-scrim");
-      overlay.style.animation = "none";
-      void overlay.offsetWidth;
-      overlay.style.animation = "";
       overlay.classList.add("lion-advisor-feedback-scrim");
+      overlay.style.animation = "none";
     }
     markAdvisorChildren(panel);
     restartAnimation(panel);
@@ -1085,6 +1116,31 @@ tooltipList = [
   function delayedAdvisorScan(root) {
     window.setTimeout(function() { scanForAdvisorPanels(root || document.body); }, 0);
     window.setTimeout(function() { scanForAdvisorPanels(document.body); }, 40);
+  }
+
+
+  function installAdvisorAppendHook() {
+    if (!window.jQuery || !window.jQuery.fn || window.jQuery.fn.__lionverseAdvisorAppendHook) return false;
+    var originalAppend = window.jQuery.fn.append;
+    window.jQuery.fn.append = function() {
+      var result = originalAppend.apply(this, arguments);
+      for (var i = 0; i < arguments.length; i++) {
+        var item = arguments[i];
+        if (typeof item === "string") {
+          if (item.indexOf("Advisor Feedback") !== -1 || item.indexOf('id="visit_window"') !== -1 || item.indexOf("id='visit_window'") !== -1 || item.indexOf('id="feedback_window"') !== -1 || item.indexOf("id='feedback_window'") !== -1) delayedAdvisorScan(document.body);
+        } else if (item && item.nodeType === 1) {
+          delayedAdvisorScan(item);
+        }
+      }
+      return result;
+    };
+    window.jQuery.fn.__lionverseAdvisorAppendHook = true;
+    return true;
+  }
+
+  if (!installAdvisorAppendHook()) {
+    window.setTimeout(installAdvisorAppendHook, 50);
+    window.setTimeout(installAdvisorAppendHook, 250);
   }
 
   document.addEventListener("mousedown", function(event) {
