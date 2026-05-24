@@ -894,30 +894,26 @@ tooltipList = [
   @keyframes lionAdvisorWindowIn {
     0% {
       opacity: 0;
-      transform: translate3d(0, 16px, 0) scale(0.974);
-      filter: brightness(0.972) saturate(0.985);
+      transform: translate3d(0, 7px, 0) scale(0.992);
     }
-    42% {
+    48% {
       opacity: 1;
-      transform: translate3d(0, -2.5px, 0) scale(1.004);
-      filter: brightness(1.006) saturate(1.004);
+      transform: translate3d(0, -0.7px, 0) scale(1.001);
     }
-    68% {
+    72% {
       opacity: 1;
-      transform: translate3d(0, 0.7px, 0) scale(0.999);
-      filter: brightness(1.002) saturate(1.002);
+      transform: translate3d(0, 0.2px, 0) scale(1);
     }
     100% {
       opacity: 1;
       transform: translate3d(0, 0, 0) scale(1);
-      filter: none;
     }
   }
 
   @keyframes lionAdvisorDetailIn {
     0% {
       opacity: 0;
-      transform: translate3d(0, 5px, 0);
+      transform: translate3d(0, 2px, 0);
     }
     100% {
       opacity: 1;
@@ -925,19 +921,20 @@ tooltipList = [
     }
   }
 
-  #feedback_overlay.lion-advisor-feedback-scrim {
-    background: rgba(10, 18, 30, 0.10) !important;
-    background-color: rgba(10, 18, 30, 0.10) !important;
+  #feedback_overlay.lion-advisor-feedback-scrim,
+  #visit_overlay.lion-advisor-feedback-scrim {
+    background: rgba(10, 18, 30, 0.08) !important;
+    background-color: rgba(10, 18, 30, 0.08) !important;
     opacity: 1 !important;
     filter: none !important;
-    animation: lionAdvisorScrimIn 145ms ease-out both !important;
+    animation: lionAdvisorScrimIn 110ms ease-out both !important;
   }
 
   #feedback_window.lion-advisor-feedback-window,
   #visit_window.lion-advisor-feedback-window,
   .inner_window.lion-advisor-feedback-window {
     opacity: 1 !important;
-    animation: lionAdvisorWindowIn 430ms var(--lion-motion-advisor-settle) both !important;
+    animation: lionAdvisorWindowIn 320ms var(--lion-motion-advisor-settle) both !important;
     transform-origin: center 30%;
     backface-visibility: hidden;
     will-change: transform, opacity;
@@ -953,15 +950,15 @@ tooltipList = [
 
   #feedback_window.lion-advisor-feedback-window h3,
   #visit_window.lion-advisor-feedback-window h3 {
-    animation: lionAdvisorDetailIn 380ms var(--lion-motion-advisor) 52ms both !important;
+    animation: lionAdvisorDetailIn 255ms var(--lion-motion-advisor) 28ms both !important;
   }
 
   .lion-advisor-feedback-window .lion-advisor-feedback-detail {
-    animation: lionAdvisorDetailIn 380ms var(--lion-motion-advisor) 92ms both !important;
+    animation: lionAdvisorDetailIn 255ms var(--lion-motion-advisor) 48ms both !important;
   }
 
   .lion-advisor-feedback-window .lion-advisor-feedback-action {
-    animation: lionAdvisorDetailIn 350ms var(--lion-motion-advisor) 142ms both !important;
+    animation: lionAdvisorDetailIn 245ms var(--lion-motion-advisor) 68ms both !important;
   }
 
   #map_container,
@@ -983,6 +980,7 @@ tooltipList = [
     label,
     .person_button,
     #feedback_overlay.lion-advisor-feedback-scrim,
+    #visit_overlay.lion-advisor-feedback-scrim,
     #feedback_window.lion-advisor-feedback-window,
     #visit_window.lion-advisor-feedback-window,
     .lion-advisor-feedback-window,
@@ -1007,7 +1005,7 @@ tooltipList = [
 
   function closestMotionTarget(node) {
     if (!node || !node.closest) return null;
-    return node.closest("button, input[type='button'], input[type='submit'], .person_button, #election_id_button, #candidate_id_button, #running_mate_id_button, #opponent_selection_id_button, #candidate_id_back, #running_mate_id_back, #opponent_selection_id_back, #latest_poll_button, #campaign_data_button, #answer_select_button, #ok_button, #no_feedback_button");
+    return node.closest("button, input[type='button'], input[type='submit'], .person_button, #election_id_button, #candidate_id_button, #running_mate_id_button, #opponent_selection_id_button, #candidate_id_back, #running_mate_id_back, #opponent_selection_id_back, #latest_poll_button, #campaign_data_button, #answer_select_button, #ok_button, #no_feedback_button, #confirm_visit_button, #no_visit_button");
   }
 
   function markPressed(target) {
@@ -1038,13 +1036,14 @@ tooltipList = [
   function isVisitAdvisorFeedback(panel) {
     if (!panel || panel.id !== "visit_window" || !panel.querySelector) return false;
     if (!hasAdvisorFeedbackHeader(panel)) return false;
-    if (!panel.querySelector("#no_feedback_button")) return false;
-    if (panel.querySelector("#confirm_visit_button, #no_visit_button")) return false;
     var text = (panel.textContent || "").toLowerCase();
-    if (text.indexOf("you have chosen to visit") !== -1) return false;
     if (text.indexOf("visits left") !== -1) return false;
     if (text.indexOf("select a state") !== -1) return false;
-    return true;
+    if (text.indexOf("estimated support") !== -1) return false;
+    if (panel.querySelector("#no_feedback_button")) return true;
+    if (panel.querySelector("#confirm_visit_button, #no_visit_button")) return true;
+    if (text.indexOf("you have chosen to visit") !== -1) return true;
+    return false;
   }
 
   function isWarningAdvisorFeedback(panel) {
@@ -1096,14 +1095,19 @@ tooltipList = [
     }
   }
 
-  function normalizeFeedbackOverlay() {
-    var overlay = document.getElementById("feedback_overlay");
+  function normalizeOverlayById(id) {
+    var overlay = document.getElementById(id);
     if (!overlay || !overlay.classList) return;
     overlay.classList.add("lion-advisor-feedback-scrim");
-    overlay.style.setProperty("background", "rgba(10, 18, 30, 0.10)", "important");
-    overlay.style.setProperty("background-color", "rgba(10, 18, 30, 0.10)", "important");
+    overlay.style.setProperty("background", "rgba(10, 18, 30, 0.08)", "important");
+    overlay.style.setProperty("background-color", "rgba(10, 18, 30, 0.08)", "important");
     overlay.style.setProperty("opacity", "1", "important");
     overlay.style.setProperty("filter", "none", "important");
+  }
+
+  function normalizeFeedbackOverlay() {
+    normalizeOverlayById("feedback_overlay");
+    normalizeOverlayById("visit_overlay");
   }
 
   function animateAdvisorPanel(panel) {
@@ -1145,8 +1149,8 @@ tooltipList = [
       var watch = false;
       for (var i = 0; i < arguments.length; i++) {
         var arg = arguments[i];
-        if (typeof arg === "string" && (arg.indexOf("feedback_window") !== -1 || arg.indexOf("visit_window") !== -1 || arg.indexOf("no_feedback_button") !== -1 || arg.indexOf("Advisor Feedback") !== -1)) watch = true;
-        if (arg && arg.nodeType === 1 && (arg.id === "feedback_window" || arg.id === "visit_window" || (arg.querySelector && arg.querySelector("#feedback_window, #visit_window, #no_feedback_button")))) watch = true;
+        if (typeof arg === "string" && (arg.indexOf("feedback_window") !== -1 || arg.indexOf("visit_window") !== -1 || arg.indexOf("no_feedback_button") !== -1 || arg.indexOf("confirm_visit_button") !== -1 || arg.indexOf("no_visit_button") !== -1 || arg.indexOf("Advisor Feedback") !== -1)) watch = true;
+        if (arg && arg.nodeType === 1 && (arg.id === "feedback_window" || arg.id === "visit_window" || (arg.querySelector && arg.querySelector("#feedback_window, #visit_window, #no_feedback_button, #confirm_visit_button, #no_visit_button")))) watch = true;
       }
       var result = window.__lionverseOriginalJqueryAppend.apply(this, arguments);
       if (watch) delayedAdvisorScan(document.body);
@@ -1162,13 +1166,13 @@ tooltipList = [
   document.addEventListener("mousedown", function(event) {
     markPressed(closestMotionTarget(event.target));
     markAnswerLabel(event.target);
-    if (event.target && event.target.closest && event.target.closest("#answer_select_button, #ok_button, #no_feedback_button")) delayedAdvisorScan(document.body);
+    if (event.target && event.target.closest && event.target.closest("#answer_select_button, #ok_button, #no_feedback_button, #confirm_visit_button, #no_visit_button")) delayedAdvisorScan(document.body);
   }, true);
 
   document.addEventListener("touchstart", function(event) {
     markPressed(closestMotionTarget(event.target));
     markAnswerLabel(event.target);
-    if (event.target && event.target.closest && event.target.closest("#answer_select_button, #ok_button, #no_feedback_button")) delayedAdvisorScan(document.body);
+    if (event.target && event.target.closest && event.target.closest("#answer_select_button, #ok_button, #no_feedback_button, #confirm_visit_button, #no_visit_button")) delayedAdvisorScan(document.body);
   }, { capture: true, passive: true });
 
   document.addEventListener("keydown", function(event) {
