@@ -503,8 +503,6 @@ corrr = `
 document.getElementById("header").src = "https://i.imgur.com/ZVUNIpj.png"
 nct_stuff.themes[nct_stuff.selectedTheme].coloring_title = "#050A0F"
 nct_stuff.themes[nct_stuff.selectedTheme].coloring_window = "#183F9C"
-campaignTrail_temp.credits =
-  '<span style="color:#0D0D0D">u/Alex72598</span>';
 document.getElementsByClassName("game_header")[0].style.backgroundColor = nct_stuff.themes[nct_stuff.selectedTheme].coloring_title
 $(".container")[0].style.backgroundImage = "url(https://i.imgur.com/IqkXcIS.png)" 
 $("#game_window")[0].style.backgroundImage = "url(https://i.imgur.com/LHttFUW.png)" 
@@ -803,3 +801,179 @@ tooltipList = [
 ];
 
 //#endcode
+
+
+/* LIONVERSE_MOTION_POLISH_START */
+(function() {
+  if (window.__lionverseMotionPolishLoaded) return;
+  window.__lionverseMotionPolishLoaded = true;
+
+  var css = `
+  :root {
+    --lion-motion-press: cubic-bezier(0.20, 0.80, 0.22, 1);
+    --lion-motion-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  button,
+  input[type="button"],
+  input[type="submit"],
+  .person_button,
+  #election_id_button,
+  #candidate_id_button,
+  #running_mate_id_button,
+  #opponent_selection_id_button,
+  #candidate_id_back,
+  #running_mate_id_back,
+  #opponent_selection_id_back,
+  #latest_poll_button,
+  #campaign_data_button {
+    transition:
+      transform 115ms var(--lion-motion-press),
+      filter 140ms var(--lion-motion-soft),
+      box-shadow 160ms var(--lion-motion-soft),
+      border-color 160ms var(--lion-motion-soft),
+      background-color 160ms var(--lion-motion-soft) !important;
+    transform-origin: center center;
+    will-change: transform;
+  }
+
+  button:hover,
+  input[type="button"]:hover,
+  input[type="submit"]:hover,
+  .person_button:hover {
+    transform: translateY(-0.5px);
+    filter: brightness(1.015) saturate(1.015);
+  }
+
+  button:active,
+  input[type="button"]:active,
+  input[type="submit"]:active,
+  .person_button:active,
+  .lion-button-pressing {
+    transform: translateY(1px) scale(0.993) !important;
+    filter: brightness(0.965) saturate(0.985) !important;
+  }
+
+  input[type="radio"],
+  input[type="checkbox"] {
+    transition:
+      transform 120ms var(--lion-motion-press),
+      filter 120ms var(--lion-motion-soft) !important;
+    transform-origin: center center;
+  }
+
+  input[type="radio"]:checked,
+  input[type="checkbox"]:checked {
+    transform: scale(1.035);
+    filter: brightness(1.025);
+  }
+
+  .question_window label,
+  .inner_window_question label,
+  #question_form label {
+    transition:
+      background-color 150ms var(--lion-motion-soft),
+      text-shadow 150ms var(--lion-motion-soft) !important;
+  }
+
+  .lion-answer-touch {
+    background-color: rgba(255, 255, 255, 0.045) !important;
+  }
+
+  @keyframes lionOverlaySettle {
+    0% {
+      opacity: 0;
+      transform: translateY(3px) scale(0.996);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .overlay_window {
+    animation: lionOverlaySettle 155ms cubic-bezier(0.22, 0.61, 0.36, 1) both !important;
+  }
+
+  #map_container,
+  #map_container *,
+  svg,
+  svg *,
+  .state,
+  path,
+  #visit_window,
+  #visit_window *,
+  #visit_content,
+  #visit_content *,
+  #results_container,
+  #results_container *,
+  .final_results_table,
+  .final_results_table * {
+    animation-name: none !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    button,
+    input,
+    label,
+    .person_button,
+    .overlay_window {
+      animation: none !important;
+      transition: none !important;
+      transform: none !important;
+      filter: none !important;
+    }
+  }
+  `;
+
+  var old = document.getElementById("lionverse-motion-polish-style");
+  if (old) old.remove();
+
+  var style = document.createElement("style");
+  style.id = "lionverse-motion-polish-style";
+  style.type = "text/css";
+  style.appendChild(document.createTextNode(css));
+  document.head.appendChild(style);
+
+  function closestMotionTarget(node) {
+    if (!node || !node.closest) return null;
+    return node.closest("button, input[type='button'], input[type='submit'], .person_button, #election_id_button, #candidate_id_button, #running_mate_id_button, #opponent_selection_id_button, #candidate_id_back, #running_mate_id_back, #opponent_selection_id_back, #latest_poll_button, #campaign_data_button");
+  }
+
+  function markPressed(target) {
+    if (!target || target.classList.contains("lion-button-pressing")) return;
+    target.classList.add("lion-button-pressing");
+    window.setTimeout(function() {
+      if (target && target.classList) target.classList.remove("lion-button-pressing");
+    }, 125);
+  }
+
+  function markAnswerLabel(node) {
+    if (!node || !node.closest) return;
+    var label = node.closest("#question_form label, .question_window label, .inner_window_question label");
+    if (!label) return;
+    if (!label.querySelector || !label.querySelector("input[type='radio'], input[type='checkbox']")) return;
+    label.classList.add("lion-answer-touch");
+    window.setTimeout(function() {
+      if (label && label.classList) label.classList.remove("lion-answer-touch");
+    }, 150);
+  }
+
+  document.addEventListener("mousedown", function(event) {
+    markPressed(closestMotionTarget(event.target));
+    markAnswerLabel(event.target);
+  }, true);
+
+  document.addEventListener("touchstart", function(event) {
+    markPressed(closestMotionTarget(event.target));
+    markAnswerLabel(event.target);
+  }, { capture: true, passive: true });
+
+  document.addEventListener("keydown", function(event) {
+    if (event.key !== "Enter" && event.key !== " ") return;
+    markPressed(closestMotionTarget(event.target));
+    markAnswerLabel(event.target);
+  }, true);
+})();
+ /* LIONVERSE_MOTION_POLISH_END */
+
