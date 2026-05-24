@@ -917,8 +917,8 @@ tooltipList = [
 
   #feedback_overlay.lion-advisor-feedback-scrim,
   #visit_overlay.lion-advisor-feedback-scrim {
-    background: rgba(0, 0, 0, 0.26) !important;
-    background-color: rgba(0, 0, 0, 0.26) !important;
+    background: rgba(0, 0, 0, 0.34) !important;
+    background-color: rgba(0, 0, 0, 0.34) !important;
     opacity: 1 !important;
     filter: none !important;
     backdrop-filter: blur(1.25px) saturate(0.96) !important;
@@ -1113,8 +1113,8 @@ tooltipList = [
     var overlay = document.getElementById(id);
     if (!overlay || !overlay.classList) return;
     overlay.classList.add("lion-advisor-feedback-scrim");
-    overlay.style.setProperty("background", "rgba(0, 0, 0, 0.26)", "important");
-    overlay.style.setProperty("background-color", "rgba(0, 0, 0, 0.26)", "important");
+    overlay.style.setProperty("background", "rgba(0, 0, 0, 0.34)", "important");
+    overlay.style.setProperty("background-color", "rgba(0, 0, 0, 0.34)", "important");
     overlay.style.setProperty("opacity", "1", "important");
     overlay.style.setProperty("filter", "none", "important");
     overlay.style.setProperty("backdrop-filter", "blur(1.25px) saturate(0.96)", "important");
