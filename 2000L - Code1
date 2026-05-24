@@ -803,15 +803,17 @@ tooltipList = [
 //#endcode
 
 
-/* LIONVERSE_MOTION_POLISH_START */
 (function() {
-  if (window.__lionverseMotionPolishLoaded) return;
+  var lionMotionVersion = "advisor-feedback-2026-05-24";
+  if (window.__lionverseMotionPolishVersion === lionMotionVersion) return;
   window.__lionverseMotionPolishLoaded = true;
+  window.__lionverseMotionPolishVersion = lionMotionVersion;
 
   var css = `
   :root {
     --lion-motion-press: cubic-bezier(0.20, 0.80, 0.22, 1);
     --lion-motion-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --lion-motion-advisor: cubic-bezier(0.18, 0.78, 0.22, 1);
   }
 
   button,
@@ -880,19 +882,29 @@ tooltipList = [
     background-color: rgba(255, 255, 255, 0.045) !important;
   }
 
-  @keyframes lionOverlaySettle {
+  @keyframes lionAdvisorSettle {
     0% {
       opacity: 0;
-      transform: translateY(3px) scale(0.996);
+      transform: translateY(7px) scale(0.986);
+      filter: brightness(0.992) saturate(0.985);
+    }
+    56% {
+      opacity: 1;
+      transform: translateY(-0.75px) scale(1.0015);
+      filter: brightness(1.006) saturate(1.006);
     }
     100% {
       opacity: 1;
       transform: translateY(0) scale(1);
+      filter: none;
     }
   }
 
-  .overlay_window {
-    animation: lionOverlaySettle 155ms cubic-bezier(0.22, 0.61, 0.36, 1) both !important;
+  .lion-advisor-feedback-window {
+    animation: lionAdvisorSettle 235ms var(--lion-motion-advisor) both !important;
+    transform-origin: center 38%;
+    will-change: opacity, transform;
+    backface-visibility: hidden;
   }
 
   #map_container,
@@ -917,7 +929,7 @@ tooltipList = [
     input,
     label,
     .person_button,
-    .overlay_window {
+    .lion-advisor-feedback-window {
       animation: none !important;
       transition: none !important;
       transform: none !important;
@@ -959,6 +971,49 @@ tooltipList = [
     }, 150);
   }
 
+  function isMapOrVisitPanel(panel) {
+    if (!panel || !panel.closest) return false;
+    if (panel.closest("#map_container, #visit_window, #visit_content, #results_container, #state_result_container, #overall_result_container")) return true;
+    var text = (panel.textContent || "").slice(0, 120).toLowerCase();
+    return text.indexOf("select a state") !== -1 || text.indexOf("visits left") !== -1;
+  }
+
+  function looksLikeAdvisorWindow(panel) {
+    if (!panel || panel.nodeType !== 1 || isMapOrVisitPanel(panel)) return false;
+    var idClass = ((panel.id || "") + " " + (panel.className || "")).toLowerCase();
+    var title = "";
+    var h3 = panel.querySelector && panel.querySelector("h3");
+    if (h3) title = (h3.textContent || "").toLowerCase();
+    var text = ((title + " " + (panel.textContent || "")).slice(0, 500)).toLowerCase();
+    return /advisor|feedback/.test(idClass) || /advisor feedback|advisor says|your advisor/.test(text);
+  }
+
+  function findAdvisorPanel(node) {
+    if (!node || node.nodeType !== 1) return null;
+    var candidates = [];
+    if (node.matches && node.matches(".overlay_window, .inner_window, .window, [id*='advisor' i], [class*='advisor' i], [id*='feedback' i], [class*='feedback' i]")) candidates.push(node);
+    if (node.querySelectorAll) {
+      candidates = candidates.concat(Array.prototype.slice.call(node.querySelectorAll(".overlay_window, .inner_window, .window, [id*='advisor' i], [class*='advisor' i], [id*='feedback' i], [class*='feedback' i]")));
+    }
+    for (var i = 0; i < candidates.length; i++) {
+      var panel = candidates[i];
+      if (looksLikeAdvisorWindow(panel)) return panel;
+      var innerTitle = panel.querySelector && panel.querySelector("h3");
+      if (innerTitle && /advisor feedback/i.test(innerTitle.textContent || "") && !isMapOrVisitPanel(panel)) return panel;
+    }
+    return null;
+  }
+
+  function animateAdvisorPanel(panel) {
+    if (!panel || !panel.classList || panel.classList.contains("lion-advisor-feedback-window")) return;
+    if (isMapOrVisitPanel(panel)) return;
+    panel.classList.add("lion-advisor-feedback-window");
+  }
+
+  function scanForAdvisorPanels(root) {
+    animateAdvisorPanel(findAdvisorPanel(root || document.body));
+  }
+
   document.addEventListener("mousedown", function(event) {
     markPressed(closestMotionTarget(event.target));
     markAnswerLabel(event.target);
@@ -974,6 +1029,21 @@ tooltipList = [
     markPressed(closestMotionTarget(event.target));
     markAnswerLabel(event.target);
   }, true);
+
+  if (window.MutationObserver) {
+    var advisorObserver = new MutationObserver(function(mutations) {
+      for (var i = 0; i < mutations.length; i++) {
+        var added = mutations[i].addedNodes;
+        for (var j = 0; j < added.length; j++) {
+          scanForAdvisorPanels(added[j]);
+        }
+      }
+    });
+    advisorObserver.observe(document.body || document.documentElement, { childList: true, subtree: true });
+    window.__lionverseAdvisorObserver = advisorObserver;
+  }
+
+  window.setTimeout(function() { scanForAdvisorPanels(document.body); }, 60);
 })();
- /* LIONVERSE_MOTION_POLISH_END */
+ 
 
