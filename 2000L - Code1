@@ -804,7 +804,7 @@ tooltipList = [
 
 
 (function() {
-  var lionMotionVersion = "advisor-feedback-2026-05-24c";
+  var lionMotionVersion = "advisor-feedback-2026-05-24d";
   if (window.__lionverseMotionPolishVersion === lionMotionVersion) return;
   if (window.__lionverseAdvisorObserver && window.__lionverseAdvisorObserver.disconnect) {
     window.__lionverseAdvisorObserver.disconnect();
@@ -816,8 +816,8 @@ tooltipList = [
   :root {
     --lion-motion-press: cubic-bezier(0.20, 0.80, 0.22, 1);
     --lion-motion-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
-    --lion-motion-advisor: cubic-bezier(0.16, 0.84, 0.22, 1);
-    --lion-motion-advisor-settle: cubic-bezier(0.18, 0.96, 0.23, 1);
+    --lion-motion-advisor: cubic-bezier(0.19, 0.90, 0.20, 1);
+    --lion-motion-advisor-settle: cubic-bezier(0.20, 0.96, 0.22, 1);
   }
 
   button,
@@ -894,48 +894,42 @@ tooltipList = [
   @keyframes lionAdvisorWindowIn {
     0% {
       opacity: 0;
-      transform: translate3d(0, 7px, 0) scale(0.992);
+      transform: translate3d(0, 5px, 0) scaleX(0.990) scaleY(0.982);
     }
-    48% {
+    56% {
       opacity: 1;
-      transform: translate3d(0, -0.7px, 0) scale(1.001);
+      transform: translate3d(0, -0.35px, 0) scaleX(0.999) scaleY(1.002);
     }
-    72% {
+    82% {
       opacity: 1;
-      transform: translate3d(0, 0.2px, 0) scale(1);
+      transform: translate3d(0, 0.08px, 0) scaleX(1.0003) scaleY(0.9996);
     }
     100% {
       opacity: 1;
-      transform: translate3d(0, 0, 0) scale(1);
+      transform: translate3d(0, 0, 0) scaleX(1) scaleY(1);
     }
   }
 
-  @keyframes lionAdvisorDetailIn {
-    0% {
-      opacity: 0;
-      transform: translate3d(0, 2px, 0);
-    }
-    100% {
-      opacity: 1;
-      transform: translate3d(0, 0, 0);
-    }
+  @keyframes lionAdvisorContentIn {
+    0% { opacity: 0.88; }
+    100% { opacity: 1; }
   }
 
   #feedback_overlay.lion-advisor-feedback-scrim,
   #visit_overlay.lion-advisor-feedback-scrim {
-    background: rgba(10, 18, 30, 0.08) !important;
-    background-color: rgba(10, 18, 30, 0.08) !important;
+    background: rgba(10, 18, 30, 0.045) !important;
+    background-color: rgba(10, 18, 30, 0.045) !important;
     opacity: 1 !important;
     filter: none !important;
-    animation: lionAdvisorScrimIn 110ms ease-out both !important;
+    animation: lionAdvisorScrimIn 135ms ease-out both !important;
   }
 
   #feedback_window.lion-advisor-feedback-window,
   #visit_window.lion-advisor-feedback-window,
   .inner_window.lion-advisor-feedback-window {
     opacity: 1 !important;
-    animation: lionAdvisorWindowIn 320ms var(--lion-motion-advisor-settle) both !important;
-    transform-origin: center 30%;
+    animation: lionAdvisorWindowIn 365ms var(--lion-motion-advisor-settle) both !important;
+    transform-origin: center 34%;
     backface-visibility: hidden;
     will-change: transform, opacity;
   }
@@ -945,20 +939,9 @@ tooltipList = [
   .lion-advisor-feedback-window .lion-advisor-feedback-detail,
   .lion-advisor-feedback-window .lion-advisor-feedback-action {
     backface-visibility: hidden;
-    will-change: transform, opacity;
-  }
-
-  #feedback_window.lion-advisor-feedback-window h3,
-  #visit_window.lion-advisor-feedback-window h3 {
-    animation: lionAdvisorDetailIn 255ms var(--lion-motion-advisor) 28ms both !important;
-  }
-
-  .lion-advisor-feedback-window .lion-advisor-feedback-detail {
-    animation: lionAdvisorDetailIn 255ms var(--lion-motion-advisor) 48ms both !important;
-  }
-
-  .lion-advisor-feedback-window .lion-advisor-feedback-action {
-    animation: lionAdvisorDetailIn 245ms var(--lion-motion-advisor) 68ms both !important;
+    will-change: opacity;
+    transform: none !important;
+    animation: lionAdvisorContentIn 210ms ease-out 70ms both !important;
   }
 
   #map_container,
@@ -1099,8 +1082,8 @@ tooltipList = [
     var overlay = document.getElementById(id);
     if (!overlay || !overlay.classList) return;
     overlay.classList.add("lion-advisor-feedback-scrim");
-    overlay.style.setProperty("background", "rgba(10, 18, 30, 0.08)", "important");
-    overlay.style.setProperty("background-color", "rgba(10, 18, 30, 0.08)", "important");
+    overlay.style.setProperty("background", "rgba(10, 18, 30, 0.045)", "important");
+    overlay.style.setProperty("background-color", "rgba(10, 18, 30, 0.045)", "important");
     overlay.style.setProperty("opacity", "1", "important");
     overlay.style.setProperty("filter", "none", "important");
   }
