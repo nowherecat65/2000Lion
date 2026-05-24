@@ -804,7 +804,7 @@ tooltipList = [
 
 
 (function() {
-  var lionMotionVersion = "advisor-feedback-2026-05-24d";
+  var lionMotionVersion = "advisor-feedback-2026-05-24e";
   if (window.__lionverseMotionPolishVersion === lionMotionVersion) return;
   if (window.__lionverseAdvisorObserver && window.__lionverseAdvisorObserver.disconnect) {
     window.__lionverseAdvisorObserver.disconnect();
@@ -938,12 +938,41 @@ tooltipList = [
 
   #feedback_window.lion-advisor-feedback-window h3,
   #visit_window.lion-advisor-feedback-window h3,
-  .lion-advisor-feedback-window .lion-advisor-feedback-detail,
-  .lion-advisor-feedback-window .lion-advisor-feedback-action {
+  .lion-advisor-feedback-window .lion-advisor-feedback-detail {
     backface-visibility: hidden;
     will-change: opacity;
     transform: none !important;
     animation: lionAdvisorContentIn 210ms ease-out 70ms both !important;
+  }
+
+  #feedback_window.lion-advisor-feedback-window button,
+  #visit_window.lion-advisor-feedback-window button,
+  .lion-advisor-feedback-window .lion-advisor-feedback-action {
+    backface-visibility: hidden;
+    transform-origin: center center;
+    will-change: transform, opacity;
+    animation: lionAdvisorContentIn 190ms ease-out 70ms both !important;
+    transition:
+      transform 115ms var(--lion-motion-press),
+      filter 140ms var(--lion-motion-soft),
+      box-shadow 160ms var(--lion-motion-soft),
+      border-color 160ms var(--lion-motion-soft),
+      background-color 160ms var(--lion-motion-soft) !important;
+  }
+
+  #feedback_window.lion-advisor-feedback-window button:hover,
+  #visit_window.lion-advisor-feedback-window button:hover,
+  .lion-advisor-feedback-window .lion-advisor-feedback-action:hover {
+    transform: translateY(-0.45px) scale(1.002) !important;
+    filter: brightness(1.012) saturate(1.01) !important;
+  }
+
+  #feedback_window.lion-advisor-feedback-window button:active,
+  #visit_window.lion-advisor-feedback-window button:active,
+  .lion-advisor-feedback-window .lion-advisor-feedback-action:active,
+  .lion-advisor-feedback-window .lion-button-pressing {
+    transform: translateY(1px) scale(0.993) !important;
+    filter: brightness(0.965) saturate(0.985) !important;
   }
 
   #map_container,
