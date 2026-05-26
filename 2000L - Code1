@@ -490,7 +490,7 @@ jet_data = {
     "windowColor": "#183F9C",
     "containerColor": "#FFFFFF",
     "innerWindowColor": "#F0EFEF",
-    "bannerImageUrl": "https://i.imgur.com/ZVUNIpj.png",
+    "bannerImageUrl": "https://i.postimg.cc/Ghsy1hJT/image44.webp",
     "backgroundImageUrl": "https://i.imgur.com/QLJ8F5m.png",
     "endingTextColor": "#ffffff",
     "customQuote": ""
@@ -500,7 +500,7 @@ jet_data = {
 
 corrr = `
 <h2 style="margin-bottom: 4px; color: #f5f5f5; font-weight: bold; text-shadow: 1px 1px 0 #8a0f18, 0 0 3px #000; font-size: 42px; background: linear-gradient(to bottom, #0d0d13, #1b0f1f, #0d1320); padding: 1px 2px; border: 0.75px solid #6079a0; border-radius: 1px;"><span class="typewriter">2000Lion</span></h2>`;
-document.getElementById("header").src = "https://i.imgur.com/ZVUNIpj.png"
+document.getElementById("header").src = "https://i.postimg.cc/Ghsy1hJT/image44.webp"
 nct_stuff.themes[nct_stuff.selectedTheme].coloring_title = "#050A0F"
 nct_stuff.themes[nct_stuff.selectedTheme].coloring_window = "#183F9C"
 document.getElementsByClassName("game_header")[0].style.backgroundColor = nct_stuff.themes[nct_stuff.selectedTheme].coloring_title
