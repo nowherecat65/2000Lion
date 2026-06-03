@@ -5133,7 +5133,7 @@ campaignTrail_temp.candidate_state_multiplier_json = [
         "fields": {
             "candidate": 77,
             "state": 183,
-            "state_multiplier": 0.981112
+            "state_multiplier": 1.056112
         }
     },
     {
@@ -5160,7 +5160,7 @@ campaignTrail_temp.candidate_state_multiplier_json = [
         "fields": {
             "candidate": 77,
             "state": 186,
-            "state_multiplier": 1.0
+            "state_multiplier": 1.025
         }
     },
     {
@@ -5385,7 +5385,7 @@ campaignTrail_temp.candidate_state_multiplier_json = [
         "fields": {
             "candidate": 77,
             "state": 211,
-            "state_multiplier": 1.0
+            "state_multiplier": 1.015
         }
     },
     {
@@ -5430,7 +5430,7 @@ campaignTrail_temp.candidate_state_multiplier_json = [
         "fields": {
             "candidate": 77,
             "state": 216,
-            "state_multiplier": 1.0
+            "state_multiplier": 0.99
         }
     },
     {
@@ -5574,7 +5574,7 @@ campaignTrail_temp.candidate_state_multiplier_json = [
         "fields": {
             "candidate": 78,
             "state": 181,
-            "state_multiplier": 1.065
+            "state_multiplier": 1.07634
         }
     },
     {
@@ -5592,7 +5592,7 @@ campaignTrail_temp.candidate_state_multiplier_json = [
         "fields": {
             "candidate": 78,
             "state": 183,
-            "state_multiplier": 0.995
+            "state_multiplier": 0.975
         }
     },
     {
@@ -5781,7 +5781,7 @@ campaignTrail_temp.candidate_state_multiplier_json = [
         "fields": {
             "candidate": 78,
             "state": 204,
-            "state_multiplier": 1.055
+            "state_multiplier": 1.066
         }
     },
     {
@@ -5889,7 +5889,7 @@ campaignTrail_temp.candidate_state_multiplier_json = [
         "fields": {
             "candidate": 78,
             "state": 216,
-            "state_multiplier": 1.045
+            "state_multiplier": 1.066623452
         }
     },
     {
