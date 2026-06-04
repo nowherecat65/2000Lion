@@ -45,29 +45,6 @@ campaignTrail_temp.election_json = [
 campaignTrail_temp.candidate_json = [
     {
         "model": "campaign_trail.candidate",
-        "pk": 77,
-        "fields": {
-            "first_name": "Fred",
-            "last_name": "Thompson",
-            "election": 9,
-            "party": "Republican",
-            "state": "Tennessee",
-            "priority": 1,
-            "description": "<div style='overflow-y:scroll;height:200px;'><p>Fred Dalton Thompson is a senator from the state of Tennessee, a position he has held since 1994, when he was able to pull off an upset against longtime Democratic senator Jim Sasser that instantly cemented his rising-star status. Before becoming a senator, Thompson was an attorney, lobbyist, and actor. Early in his career, he was involved in the Watergate hearings, and later in the decade, won a corruption case against Tennessee’s Democratic governor. In the 1980s and early 1990s, Thompson secured acting roles in several films and TV shows including Matlock, Days of Thunder, and Die Hard 2, gaining recognition as a character actor who portrayed figures of authority. His dry wit, commanding voice, and television-ready presence have only added to the sense that he looks and sounds the part of a national candidate. He is, by most reckonings, a solidly conservative Republican, and relatively popular with both the mainstream and right wings of the party. This reputation helped him run a unifying campaign that propelled him to the nomination.<br><br>Thompson was not considered an early favorite for the nomination, however, and his place at the top of the ticket remains a matter of some debate in Republican circles. For starters, some have criticized his lack of experience in political office, as he is just nearing the end of his first Senate term. Furthermore, there is the issue of his lobbying, particularly his role in deregulating the savings-and-loan industry, for which he can expect to be attacked early and often. To overcome these roadblocks, Thompson could play up his record in the Senate as a vocal supporter of campaign finance reform and government efficiency and accountability. Or he may want to highlight his anti-corruption record as an attorney. Perhaps he could even try to incorporate his Hollywood career into his campaign, framing himself as another Reagan. With the party mostly behind him, Thompson’s prospects depend on how he handles the pressure of presidential politics…</p></div>",
-            "color_hex": "#bc3d1e",
-            "secondary_color_hex": "#FFA0A0",
-            "is_active": 1,
-            "image_url": "https://i.postimg.cc/k5cc3rZr/vr4uac-A.jpg",
-            "electoral_victory_message": "<h3>Congratulations! You have won the 2000 election.</h3><p>Confounding the predictions of many experts, you were able to turn the tables on Al Gore, in spite of the economy and Clinton's popularity.</p><p>On the political front, you can push for tax cuts to spur the economy and return the budget surplus to the American people. You might also pursue education and immigration reform, individual Social Security accounts, and new laws to defend the family and the sanctity of life.</p>",
-            "electoral_loss_message": "<h3>Sorry! You have lost the 2000 election.</h3><p>Perhaps it was always a long-shot, with the Democrats in such a commanding position after eight years of Bill Clinton. In any case, at least you are still the Governor of Texas.</p><p>Expect Al Gore to unleash a new round of government programs and environmental regulations. You are still youngish, however. If the election was close this time, perhaps you can run again in 2004, or work on behalf your brother Jeb.</p>",
-            "no_electoral_majority_message": "<h3>Wow! You have won in a squeaker.</h3><p>No candidate achieved a majority of the electoral votes, marking the first time this has happened since 1824. Fortunately for you, the majority of U.S. states have Republican controlled congressional delegations, and they will cast their votes accordingly.</p><p>Given the incredibly close nature of the election, you will surely be expected to govern as a moderate, conciliatory President. Right??</p>",
-            "description_as_running_mate": "''",
-            "candidate_score": 1,
-            "running_mate": false
-        }
-    },
-    {
-        "model": "campaign_trail.candidate",
         "pk": 78,
         "fields": {
             "first_name": "Ann",
@@ -84,6 +61,29 @@ campaignTrail_temp.candidate_json = [
             "electoral_victory_message": "<h3>Congratulations! You have won the 2000 election.</h3><p>Though it was perhaps expected, you could have easily faltered at a number of points. Credit to you for pulling through.</p><p>On the political front, you can continue the Clinton legacy and strengthen Social Security for generations to come. Perhaps you can succeed on health care where Clinton came up short? Or maybe you can create a future of renewable energy for America. Just be wary of a (George or Jeb?) Bush challenge in 2004.</p>",
             "electoral_loss_message": "<h3>Sorry! You have lost the 2000 election.</h3><p>Surely the second-guessing will be intense, but if things were close you could probably run again in 2004.</p><p>It seems that with George W. Bush and a Republican majority, the United States can expect some conservative policy-making over the next four years. Hopefully Bush comes through on his promise to govern in a bipartisan, conciliatory manner. A lot should depend on the margin of his victory, and whether it was large or small.</p>",
             "no_electoral_majority_message": "<h3>Sorry! You have lost in a squeaker.</h3><p>No candidate achieved a majority of the electoral votes, for the first time since 1824. Unfortunately for you, a majority of states have Republican controlled congressional delegations.</p><p>It seems that with George W. Bush and a Republican majority, the United States can expect some conservative policy-making over the next four years. Hopefully Bush comes through on his promise to govern in a bipartisan, conciliatory manner.</p>",
+            "description_as_running_mate": "''",
+            "candidate_score": 1,
+            "running_mate": false
+        }
+    },
+    {
+        "model": "campaign_trail.candidate",
+        "pk": 77,
+        "fields": {
+            "first_name": "Fred",
+            "last_name": "Thompson",
+            "election": 9,
+            "party": "Republican",
+            "state": "Tennessee",
+            "priority": 1,
+            "description": "<div style='overflow-y:scroll;height:200px;'><p>Fred Dalton Thompson is a senator from the state of Tennessee, a position he has held since 1994, when he was able to pull off an upset against longtime Democratic senator Jim Sasser that instantly cemented his rising-star status. Before becoming a senator, Thompson was an attorney, lobbyist, and actor. Early in his career, he was involved in the Watergate hearings, and later in the decade, won a corruption case against Tennessee’s Democratic governor. In the 1980s and early 1990s, Thompson secured acting roles in several films and TV shows including Matlock, Days of Thunder, and Die Hard 2, gaining recognition as a character actor who portrayed figures of authority. His dry wit, commanding voice, and television-ready presence have only added to the sense that he looks and sounds the part of a national candidate. He is, by most reckonings, a solidly conservative Republican, and relatively popular with both the mainstream and right wings of the party. This reputation helped him run a unifying campaign that propelled him to the nomination.<br><br>Thompson was not considered an early favorite for the nomination, however, and his place at the top of the ticket remains a matter of some debate in Republican circles. For starters, some have criticized his lack of experience in political office, as he is just nearing the end of his first Senate term. Furthermore, there is the issue of his lobbying, particularly his role in deregulating the savings-and-loan industry, for which he can expect to be attacked early and often. To overcome these roadblocks, Thompson could play up his record in the Senate as a vocal supporter of campaign finance reform and government efficiency and accountability. Or he may want to highlight his anti-corruption record as an attorney. Perhaps he could even try to incorporate his Hollywood career into his campaign, framing himself as another Reagan. With the party mostly behind him, Thompson’s prospects depend on how he handles the pressure of presidential politics…</p></div>",
+            "color_hex": "#bc3d1e",
+            "secondary_color_hex": "#FFA0A0",
+            "is_active": 1,
+            "image_url": "https://i.postimg.cc/k5cc3rZr/vr4uac-A.jpg",
+            "electoral_victory_message": "<h3>Congratulations! You have won the 2000 election.</h3><p>Confounding the predictions of many experts, you were able to turn the tables on Al Gore, in spite of the economy and Clinton's popularity.</p><p>On the political front, you can push for tax cuts to spur the economy and return the budget surplus to the American people. You might also pursue education and immigration reform, individual Social Security accounts, and new laws to defend the family and the sanctity of life.</p>",
+            "electoral_loss_message": "<h3>Sorry! You have lost the 2000 election.</h3><p>Perhaps it was always a long-shot, with the Democrats in such a commanding position after eight years of Bill Clinton. In any case, at least you are still the Governor of Texas.</p><p>Expect Al Gore to unleash a new round of government programs and environmental regulations. You are still youngish, however. If the election was close this time, perhaps you can run again in 2004, or work on behalf your brother Jeb.</p>",
+            "no_electoral_majority_message": "<h3>Wow! You have won in a squeaker.</h3><p>No candidate achieved a majority of the electoral votes, marking the first time this has happened since 1824. Fortunately for you, the majority of U.S. states have Republican controlled congressional delegations, and they will cast their votes accordingly.</p><p>Given the incredibly close nature of the election, you will surely be expected to govern as a moderate, conciliatory President. Right??</p>",
             "description_as_running_mate": "''",
             "candidate_score": 1,
             "running_mate": false
