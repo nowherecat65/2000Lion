@@ -506,7 +506,8 @@ nct_stuff.themes[nct_stuff.selectedTheme].coloring_window = "#183F9C"
 document.getElementsByClassName("game_header")[0].style.backgroundColor = nct_stuff.themes[nct_stuff.selectedTheme].coloring_title
 $(".container")[0].style.backgroundImage = "url(https://i.imgur.com/IqkXcIS.png)" 
 $("#game_window")[0].style.backgroundImage = "url(https://i.imgur.com/LHttFUW.png)" 
-document.body.background = "https://i.imgur.com/QLJ8F5m.png"
+document.body.background = "https://i.ibb.co/8kx4Ksr/gweg-3.png"
+document.body.style.backgroundSize = "cover"
 campaignTrail_temp.modBoxTheme = {
      "header_color": "#8a0f18",
      "header_text_color": "#050a0f",
