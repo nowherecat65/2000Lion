@@ -53710,8 +53710,8 @@ function applyWellstoneRoute() {
     campaignTrail_temp.candidate_last_name = 'Wellstone';
     campaignTrail_temp.running_mate_last_name = 'Graham';
     campaignTrail_temp.running_mate_state_id = '190';
-    campaignTrail_temp.candidate_image_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Paul_Wellstone,_official_Senate_photo_portrait.jpg';
-    campaignTrail_temp.running_mate_image_url = 'https://commons.wikimedia.org/wiki/Special:FilePath/Bob_Graham,_official_Senate_photo_portrait.jpg';
+    campaignTrail_temp.candidate_image_url = 'https://i.postimg.cc/FFqRt9Lc/paulwellstone.jpg';
+    campaignTrail_temp.running_mate_image_url = 'https://i.postimg.cc/pT1wjn9q/bobgraham-2.jpg';
     if (e.global_parameter_json && e.global_parameter_json[0]) { e.global_parameter_json[0].fields.question_count = 29; }
     e.candidate_state_multiplier_json.forEach(function(row) {
         if (row.fields.candidate == 78 && wellstoneStateMultipliers[row.fields.state] !== undefined) {
