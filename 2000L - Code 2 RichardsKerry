@@ -53722,14 +53722,14 @@ function applyWellstoneRoute() {
         greenCandidate.fields.first_name = 'Joel';
         greenCandidate.fields.last_name = 'Kovel';
     }
-        campaignTrail_temp.candidate_json[0]["fields"].last_name = "Paul";
-       campaignTrail_temp.candidate_json[0]["fields"].color_hex = "#059F97";
-        campaignTrail_temp.candidate_json[0]["fields"].first_name = "Wellstone";
+        campaignTrail_temp.candidate_json[0]["fields"].last_name = "Wellstone";
+       campaignTrail_temp.candidate_json[0]["fields"].color_hex = "#148AA3";
+        campaignTrail_temp.candidate_json[0]["fields"].first_name = "Paul";
 const style_overwrite = document.createElement("style");
 style_overwrite.innerHTML = 
 `#campaign_sign {
-  background-color: #047e78;
-  border-color: #013230;
+  background-color: #106d81;
+  border-color: #062b33;
 }`
 ;
 document.head.appendChild(style_overwrite);
