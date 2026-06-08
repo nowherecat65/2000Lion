@@ -12898,6 +12898,16 @@ campaignTrail_temp.candidate_state_multiplier_json = [
     },
     {
         "model": "campaign_trail.answer_score_global",
+        "pk": 100519,
+        "fields": {
+            "answer": 82030,
+            "candidate": 78,
+            "affected_candidate": 78,
+            "global_multiplier": 0.01
+        }
+    },
+    {
+        "model": "campaign_trail.answer_score_global",
         "pk": 100520,
         "fields": {
             "answer": 82031,
