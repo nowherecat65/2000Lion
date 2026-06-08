@@ -53712,6 +53712,7 @@ function applyWellstoneRoute() {
     wellstoneRouteOn = true;
     campaignTrail_temp.candidate_last_name = 'Wellstone';
     campaignTrail_temp.running_mate_last_name = 'Graham';
+    campaignTrail_temp.election_json[0]["fields"].advisor_url = 'https://i.postimg.cc/MZcQk2YP/rherhehe.jpg'; 
     campaignTrail_temp.running_mate_state_id = '190';
     campaignTrail_temp.candidate_image_url = 'https://i.postimg.cc/FFqRt9Lc/paulwellstone.jpg';
     campaignTrail_temp.running_mate_image_url = 'https://i.postimg.cc/pT1wjn9q/bobgraham-2.jpg';
