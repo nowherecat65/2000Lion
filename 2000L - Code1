@@ -1216,5 +1216,560 @@ tooltipList = [
   window.setTimeout(function() { scanForAdvisorPanels(document.body); }, 60);
 })();
 
- 
+
+/***************************************************************
+ LIONVERSE MUSIC PLAYER - 2000Lion
+****************************************************************/
+
+(function () {
+  if (window.__lionverseMusicPlayerLoaded) return;
+  window.__lionverseMusicPlayerLoaded = true;
+
+  function initLionverseMusicPlayer() {
+    const gameWindow = document.getElementById("game_window");
+    if (!gameWindow) {
+      window.setTimeout(initLionverseMusicPlayer, 150);
+      return;
+    }
+
+    /***************************************************************
+     Light Lionverse overlay-window cleanup
+    ****************************************************************/
+
+    if (window.MutationObserver) {
+      const overlayObserver = new MutationObserver(() => {
+        const overlay = document.querySelector(".overlay_window:not(.lionverse-window-done)");
+        if (!overlay) return;
+
+        overlay.classList.add("lionverse-window-done", "lionverse-window");
+
+        const titleBar = overlay.querySelector("h3");
+        if (titleBar) {
+          titleBar.classList.add("lionverse-title-bar");
+          titleBar.style.paddingLeft = "5px";
+        }
+      });
+
+      overlayObserver.observe(gameWindow, {
+        attributes: true,
+        childList: true,
+        subtree: true
+      });
+    }
+
+    /***************************************************************
+     Song / Playlist classes
+    ****************************************************************/
+
+    class Song {
+      constructor(title, artist, coverLink, audioLink) {
+        this.title = title;
+        this.artist = artist;
+        this.coverLink = coverLink;
+        this.audioLink = audioLink;
+      }
+
+      getTitle() { return this.title; }
+      getArtist() { return this.artist; }
+      getCoverLink() { return this.coverLink; }
+      getAudioLink() { return this.audioLink; }
+    }
+
+    class Playlist {
+      constructor() {
+        this.songs = [];
+        this.currentSongIndex = 0;
+      }
+
+      addSong(song) {
+        this.songs.push(song);
+      }
+
+      getCurrentSong() {
+        return this.songs[this.currentSongIndex];
+      }
+
+      playNext() {
+        if (!this.songs.length) return;
+        this.currentSongIndex = (this.currentSongIndex + 1) % this.songs.length;
+      }
+
+      playPrevious() {
+        if (!this.songs.length) return;
+        this.currentSongIndex =
+          (this.currentSongIndex - 1 + this.songs.length) % this.songs.length;
+      }
+    }
+
+    window.Song = Song;
+    window.Playlist = Playlist;
+
+    /***************************************************************
+     Scenario color detection
+    ****************************************************************/
+
+    function getLionverseAccent() {
+      const election = campaignTrail_temp &&
+        campaignTrail_temp.election_json &&
+        campaignTrail_temp.election_json[0] &&
+        campaignTrail_temp.election_json[0].fields;
+
+      const displayYear = election && election.display_year
+        ? String(election.display_year)
+        : "";
+
+      const year = election && election.year
+        ? Number(election.year)
+        : 0;
+
+      if (displayYear.includes("2000") || year === 2000) return "#315fbb";
+      if (displayYear.includes("1996") || year === 1996) return "#286FD0";
+      if (displayYear.includes("1992") || year === 1992) return "#286FD0";
+
+      return "#286FD0";
+    }
+
+    /***************************************************************
+     2000Lion Playlist
+    ****************************************************************/
+
+    let playlist = new Playlist();
+
+    playlist.addSong(new Song(
+      "Closing Time",
+      "Semisonic",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/0/08/Closing_Time_single.jpg/250px-Closing_Time_single.jpg",
+      "https://audio.jukehost.co.uk/019ea827-7009-73d0-91ae-1fd4b22ba730"
+    ));
+
+    playlist.addSong(new Song(
+      "Ready to Run",
+      "Dixie Chicks",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/c/c2/Readytorun.jpg/250px-Readytorun.jpg",
+      "https://audio.jukehost.co.uk/53627712-40b0-11f1-a012-fa163edb0845"
+    ));
+
+    playlist.addSong(new Song(
+      "Beautiful Day",
+      "U2",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/9/9f/U2_Beautiful_Day_Album_Cover.jpg/250px-U2_Beautiful_Day_Album_Cover.jpg",
+      "https://audio.jukehost.co.uk/019ea82a-d6b0-7011-a96b-f673fd6490f8"
+    ));
+
+    playlist.addSong(new Song(
+      "Sleep Now in the Fire",
+      "Rage Against the Machine",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/8/82/Rage_against_the_machine_sleep_now_in_the_fire.jpg/250px-Rage_against_the_machine_sleep_now_in_the_fire.jpg",
+      "https://audio.jukehost.co.uk/019ea82c-7dbb-7308-8b30-563a0399dc24"
+    ));
+
+    playlist.addSong(new Song(
+      "The Way",
+      "Fastball",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/9/9d/The_Way_%28song%29.jpg/250px-The_Way_%28song%29.jpg",
+      "https://audio.jukehost.co.uk/019ea82f-0ff7-73c9-bda2-798ba4ed186a"
+    ));
+
+    playlist.addSong(new Song(
+      "Let's All Make Believe",
+      "Oasis",
+      "https://upload.wikimedia.org/wikipedia/en/thumb/9/99/Go_let_it_out.jpg/250px-Go_let_it_out.jpg",
+      "https://audio.jukehost.co.uk/019ea832-177b-7283-b6b2-c3d2c962fcdd"
+    ));
+
+    /***************************************************************
+     Build player HTML
+    ****************************************************************/
+
+    const oldPlayer = document.getElementById("lionverse-player");
+    if (oldPlayer) oldPlayer.remove();
+
+    const oldAudio = document.getElementById("lionverse-audio");
+    if (oldAudio) oldAudio.remove();
+
+    const player = document.createElement("div");
+    player.id = "lionverse-player";
+    player.style.setProperty("--lionverse-accent", getLionverseAccent());
+
+    const displayBox = document.createElement("div");
+    displayBox.id = "lionverse-display-box";
+
+    const cover = document.createElement("img");
+    cover.id = "lionverse-cover";
+    cover.alt = "Album cover";
+
+    const info = document.createElement("div");
+    info.id = "lionverse-info";
+
+    const title = document.createElement("div");
+    title.id = "lionverse-title";
+
+    const artist = document.createElement("div");
+    artist.id = "lionverse-artist";
+
+    info.appendChild(title);
+    info.appendChild(artist);
+
+    displayBox.appendChild(cover);
+    displayBox.appendChild(info);
+
+    const controlsBox = document.createElement("div");
+    controlsBox.id = "lionverse-controls-box";
+
+    const controls = document.createElement("div");
+    controls.id = "lionverse-controls";
+
+    function makeButton(id, label) {
+      const button = document.createElement("button");
+      button.id = id;
+      button.className = "lionverse-player-button";
+      button.textContent = label;
+      return button;
+    }
+
+    const prevButton = makeButton("lionverse-prev", "Back");
+    const playPauseButton = makeButton("lionverse-play-pause", "Play");
+    const nextButton = makeButton("lionverse-next", "Next");
+
+    controls.appendChild(prevButton);
+    controls.appendChild(playPauseButton);
+    controls.appendChild(nextButton);
+
+    const progressWrap = document.createElement("div");
+    progressWrap.id = "lionverse-progress-wrap";
+
+    const progress = document.createElement("progress");
+    progress.id = "lionverse-progress";
+    progress.value = 0;
+    progress.max = 100;
+
+    progressWrap.appendChild(progress);
+
+    controlsBox.appendChild(controls);
+    controlsBox.appendChild(progressWrap);
+
+    const volumeBox = document.createElement("div");
+    volumeBox.id = "lionverse-volume-box";
+
+    const volumeLabel = document.createElement("span");
+    volumeLabel.id = "lionverse-volume-label";
+    volumeLabel.textContent = "Vol.";
+
+    const volume = document.createElement("input");
+    volume.id = "lionverse-volume";
+    volume.type = "range";
+    volume.min = 0;
+    volume.max = 10;
+    volume.step = 0.1;
+    volume.value = 5;
+
+    volumeBox.appendChild(volumeLabel);
+    volumeBox.appendChild(volume);
+
+    player.appendChild(displayBox);
+    player.appendChild(controlsBox);
+    player.appendChild(volumeBox);
+
+    gameWindow.insertAdjacentElement("afterend", player);
+
+    const audio = document.createElement("audio");
+    audio.id = "lionverse-audio";
+    audio.volume = 0.5;
+    document.body.appendChild(audio);
+
+    /***************************************************************
+     Player behavior
+    ****************************************************************/
+
+    function updateUI(activePlaylist) {
+      const currentSong = activePlaylist.getCurrentSong();
+      if (!currentSong) return;
+
+      cover.src = currentSong.getCoverLink();
+      title.textContent = currentSong.getTitle();
+      artist.textContent = currentSong.getArtist();
+    }
+
+    function loadCurrentSong(shouldPlay) {
+      const currentSong = playlist.getCurrentSong();
+      if (!currentSong) return;
+
+      updateUI(playlist);
+      audio.src = currentSong.getAudioLink();
+      audio.load();
+
+      if (shouldPlay) {
+        audio.play()
+          .then(() => {
+            playPauseButton.textContent = "Pause";
+          })
+          .catch(() => {
+            playPauseButton.textContent = "Play";
+          });
+      }
+    }
+
+    function changePlaylist(newPlaylist) {
+      playlist = newPlaylist;
+      playlist.currentSongIndex = 0;
+      loadCurrentSong(true);
+    }
+
+    window.updateUI = updateUI;
+    window.changePlaylist = changePlaylist;
+    window.lionversePlaylist = playlist;
+
+    playPauseButton.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play()
+          .then(() => {
+            playPauseButton.textContent = "Pause";
+          })
+          .catch(() => {
+            playPauseButton.textContent = "Play";
+          });
+      } else {
+        audio.pause();
+        playPauseButton.textContent = "Play";
+      }
+    });
+
+    nextButton.addEventListener("click", () => {
+      playlist.playNext();
+      loadCurrentSong(true);
+    });
+
+    prevButton.addEventListener("click", () => {
+      playlist.playPrevious();
+      loadCurrentSong(true);
+    });
+
+    audio.addEventListener("timeupdate", () => {
+      if (!audio.duration || !Number.isFinite(audio.duration)) {
+        progress.value = 0;
+        return;
+      }
+
+      progress.value = (audio.currentTime / audio.duration) * 100;
+    });
+
+    audio.addEventListener("ended", () => {
+      playlist.playNext();
+      loadCurrentSong(true);
+    });
+
+    volume.addEventListener("input", function () {
+      audio.volume = Number(this.value) / 10;
+    });
+
+    loadCurrentSong(false);
+
+    /***************************************************************
+     Lionverse styling
+    ****************************************************************/
+
+    const existingStyle = document.getElementById("lionverse-player-style");
+    if (existingStyle) existingStyle.remove();
+
+    const playerStyle = document.createElement("style");
+    playerStyle.id = "lionverse-player-style";
+    playerStyle.textContent = `
+#lionverse-player {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  min-height: 86px;
+  margin: 0 auto 7px auto;
+  padding: 9px 13px;
+  background: #ffffff;
+  border: 3px double #B2B2B2;
+  color: #000000;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  box-shadow: inset 0 0 0 1px #ffffff;
+}
+
+#lionverse-display-box {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  width: 50%;
+}
+
+#lionverse-cover {
+  width: 60px;
+  height: 60px;
+  flex: 0 0 auto;
+  margin-right: 13px;
+  object-fit: cover;
+  background: #f8f8f8;
+  border: 3px double #B2B2B2;
+}
+
+#lionverse-info {
+  min-width: 0;
+  line-height: 1.15;
+}
+
+#lionverse-title {
+  max-width: 260px;
+  margin: 0;
+  font-size: 13px;
+  font-weight: bold;
+  color: #000000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#lionverse-artist {
+  max-width: 260px;
+  margin-top: 3px;
+  font-size: 12px;
+  color: #333333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#lionverse-controls-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 30%;
+}
+
+#lionverse-controls {
+  display: flex;
+  gap: 7px;
+  margin-bottom: 7px;
+}
+
+button.lionverse-player-button {
+  min-width: 48px;
+  height: 24px;
+  padding: 2px 8px;
+  background: #f8f8f8;
+  color: #000000 !important;
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-right: 2px solid #777777;
+  border-bottom: 2px solid #777777;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 12px;
+  line-height: 16px;
+  cursor: pointer;
+}
+
+button.lionverse-player-button:active {
+  border-top: 2px solid #777777;
+  border-left: 2px solid #777777;
+  border-right: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  padding-top: 3px;
+  padding-left: 9px;
+}
+
+#lionverse-progress-wrap {
+  width: 90%;
+}
+
+#lionverse-progress {
+  width: 100%;
+  height: 8px;
+  display: block;
+  border: 1px solid #777777;
+  background: #ffffff;
+}
+
+#lionverse-progress::-webkit-progress-bar {
+  background: #ffffff;
+}
+
+#lionverse-progress::-webkit-progress-value {
+  background: var(--lionverse-accent);
+}
+
+#lionverse-progress::-moz-progress-bar {
+  background: var(--lionverse-accent);
+}
+
+#lionverse-volume-box {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 20%;
+  padding-left: 10px;
+}
+
+#lionverse-volume-label {
+  margin-right: 6px;
+  font-size: 12px;
+  color: #000000;
+}
+
+#lionverse-volume {
+  -webkit-appearance: none;
+  width: 90px;
+  height: 6px;
+  background: #ffffff;
+  border: 1px solid #777777;
+}
+
+#lionverse-volume::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 11px;
+  height: 14px;
+  background: var(--lionverse-accent);
+  border: 1px solid #000000;
+}
+
+#lionverse-volume::-moz-range-thumb {
+  width: 11px;
+  height: 14px;
+  background: var(--lionverse-accent);
+  border: 1px solid #000000;
+  border-radius: 0;
+}
+
+.lionverse-window {
+  border: 3px double #B2B2B2 !important;
+  background: #ffffff !important;
+}
+
+.lionverse-title-bar {
+  margin-top: 0 !important;
+  padding-top: 3px !important;
+  padding-bottom: 3px !important;
+  background: var(--lionverse-accent, #315fbb) !important;
+  color: #ffffff !important;
+  border-bottom: 3px double #B2B2B2 !important;
+  font-family: Georgia, "Times New Roman", Times, serif !important;
+}
+
+@media (max-width: 700px) {
+  #lionverse-player {
+    flex-wrap: wrap;
+    height: auto;
+    gap: 8px;
+  }
+
+  #lionverse-display-box,
+  #lionverse-controls-box,
+  #lionverse-volume-box {
+    width: 100%;
+    justify-content: center;
+  }
+
+  #lionverse-volume-box {
+    padding-left: 0;
+  }
+}
+`;
+    document.head.appendChild(playerStyle);
+  }
+
+  initLionverseMusicPlayer();
+})();
 
