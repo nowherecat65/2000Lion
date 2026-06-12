@@ -716,7 +716,7 @@ campaignTrail_temp.questions_json = [
         "pk": 80022,
         "fields": {
             "question": 70007,
-            "description": "You bet there is. Senator Wellstone, he’s a nice fella, but he’s so out of step with the country, he might as well be standin’ on Mars. His ideas don’t make a lick of sense if you take two seconds to think about ‘em."
+            "description": "You bet there is. Senator Wellstone, he’s a nice 'lil fella, but he’s so out of step with the country, he might as well be standin’ on Mars. His ideas don’t make a lick of sense if you take two seconds to think about ‘em."
         }
     },
     {
