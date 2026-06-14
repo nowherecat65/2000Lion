@@ -14056,7 +14056,7 @@ campaignTrail_temp.candidate_state_multiplier_json = [
             "answer": 82068,
             "candidate": 78,
             "affected_candidate": 77,
-            "global_multiplier": -0.0164856
+            "global_multiplier": -0.0199814856
         }
     },
     {
