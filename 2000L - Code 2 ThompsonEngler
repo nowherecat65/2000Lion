@@ -37527,15 +37527,15 @@ campaignTrail_temp.candidate_state_multiplier_json = [
             "answer_feedback": "This is definitely an unexpected move for you, as almost nobody expected this region to be heavily targeted in the campaign, but you’ve clearly sent a message with this strategy, and your supporters in these states are energized. As your final rally ends, you just hope that’s enough to get you over the finish line."
         }
     }
-];campaignTrail_temp.candidate_image_url = 'https://i.postimg.cc/T1cmBkvs/gwgwewe.jpg';
-campaignTrail_temp.running_mate_image_url = 'https://i.postimg.cc/ncZ4DY3B/johnkerry.jpg';
-campaignTrail_temp.candidate_last_name = 'Richards';
-campaignTrail_temp.running_mate_last_name = 'Kerry';
+];campaignTrail_temp.candidate_image_url = 'https://file.garden/aNtjn2887DiA_8HP/gwgwewe%20(2).png';
+campaignTrail_temp.running_mate_image_url = 'https://i.postimg.cc/6QVdpMZx/johnengler.jpg';
+campaignTrail_temp.candidate_last_name = 'Thompson';
+campaignTrail_temp.running_mate_last_name = 'Engler';
 const style_overwrite = document.createElement("style");
 style_overwrite.innerHTML = 
 `#campaign_sign {
-  background-color: #274b94;
-  border-color: #0f1e3b;
+  background-color: #953018;
+  border-color: #3c130a;
 }`
 ;
 document.head.appendChild(style_overwrite);
