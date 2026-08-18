@@ -7318,6 +7318,26 @@ campaignTrail_temp.candidate_state_multiplier_json = [
     },
     {
         "model": "campaign_trail.answer_score_global",
+        "pk": 110037,
+        "fields": {
+            "answer": 81015,
+            "candidate": 77,
+            "affected_candidate": 77,
+            "global_multiplier": -0.0088
+        }
+    },
+    {
+        "model": "campaign_trail.answer_score_global",
+        "pk": 110037,
+        "fields": {
+            "answer": 81015,
+            "candidate": 77,
+            "affected_candidate": 78,
+            "global_multiplier": 0.01
+        }
+    },
+    {
+        "model": "campaign_trail.answer_score_global",
         "pk": 110038,
         "fields": {
             "answer": 81016,
