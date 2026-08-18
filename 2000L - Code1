@@ -3389,3 +3389,39 @@ button.lionverse-player-button:active {
     console.warn("Zoinks! Bobert could not find game_window.");
     }
 })();
+/* Lion question scrollbar — shared by every Code 2 loaded under this Code 1 */
+(function () {
+    if (document.getElementById("lion-question-scrollbar-style")) return;
+
+    var lionScrollbarStyle = document.createElement("style");
+    lionScrollbarStyle.id = "lion-question-scrollbar-style";
+    lionScrollbarStyle.textContent = `
+.inner_window_question > .inner_inner_window {
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #6079A0 #D9DEE3;
+}
+
+.inner_window_question > .inner_inner_window::-webkit-scrollbar {
+  width: 10px;
+}
+
+.inner_window_question > .inner_inner_window::-webkit-scrollbar-track {
+  background: #D9DEE3;
+  border-left: 1px solid #AEB7C0;
+  box-shadow: inset 1px 0 0 rgba(255,255,255,0.55);
+}
+
+.inner_window_question > .inner_inner_window::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #8EA5C2 0%, #7087A6 50%, #6079A0 100%);
+  border: 1px solid #3A4E71;
+  box-shadow: inset 1px 0 0 rgba(255,255,255,0.45);
+}
+
+.inner_window_question > .inner_inner_window::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #9BAFC8 0%, #7D92AD 50%, #6C82A0 100%);
+}
+`;
+    document.head.appendChild(lionScrollbarStyle);
+})();
