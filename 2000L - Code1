@@ -3389,7 +3389,7 @@ button.lionverse-player-button:active {
     console.warn("Zoinks! Bobert could not find game_window.");
     }
 })();
-/* Lion question scrollbar — shared by every Code 2 loaded under this Code 1 */
+/* lionverse lookin scrollbar  */
 (function () {
     if (document.getElementById("lion-question-scrollbar-style")) return;
 
